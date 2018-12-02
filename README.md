@@ -158,21 +158,26 @@ The parameters of the learning agent can be changed in Section 4 of the notebook
 
 Run the notebook named `Tennis-SNH-pretrained.ipynb` to read in a saved checkpoint and run the environment without further training. Make sure the the network type and the weights stored in the checkpoints match. The agent(s) are defined in Section 3. Please make sure the network name ('SELU' or 'RELU') matches the type of neural network weights stored in the checkpoint, e.g.:
 
-`agent = Agent(`
-​    `state_size = state_size,`
-​    `action_size = action_size,`
-​    `num_agents = num_agents,`
-​    `network = 'RELU'`
-`)`
+```
+agent = Agent(
+    state_size = state_size,
+    action_size = action_size,
+    num_agents = num_agents,
+    network = 'RELU'
+)
+```
 
-The default is 'RELU' if not specified and I did not get 'SELU' to work. The name of the checkpoint can be changed in Section 4 of the notebook. It is currently set up to run the agent through 100 episodes end provide scores and the final average score. The final parameter is the number of episodes to run and can also be changed:
+The default is 'RELU' if not specified and I did not get 'SELU' to work. I recommend just using 'RELU,' or not specifying so that it just always uses the default. The name of the checkpoint can be changed in Section 4 of the notebook. The following examples shows how to run the agents using the checkpoint files for the neural networks which achieved the highest maximum agent score in a single episode. which a agent through 100 episodes and provide scores as well as the final average score. The final parameter is the number of episodes to run and can also be changed:
 
-`load_and_run(`
-​    `agent,`
-​    `env,`
-​    `"v2_RELU_actor_best_avg_max.pth",`
-​    `"v2_RELU_critic_best_avg_max.pth",`
-​    `100)`
+```
+load_and_run(
+    agent,
+    env,
+    "checkpoint_actor_best_agent_max.pth",
+    "checkpoint_critic_best_agent_max.pth",
+    100
+)
+```  
 
 
 
@@ -182,6 +187,7 @@ The default is 'RELU' if not specified and I did not get 'SELU' to work. The nam
 2. Tennis-SNH-pretrained.ipynb: Notebook to read in a saved checkpoint and run the agent without additional learning.
 3. model.py: The neural networks
 4. agent.py: Defines the learning agent based on DDPG  (python class Agent) 
+5. Multiple files with the prefix `.pth`: Checkpoint files contained the weights of previously training neural networks.
 
 
 
@@ -206,7 +212,10 @@ critic_fc3: Units in third layer. This parameter does nothing for the "RELU" net
 update_every: The number of time steps between each updating of the neural networks 
 num_updates: The number of times to update the networks at every update_every interval
 buffer_size: Buffer size for experience replay. Default 2e6.
-network (string): The name of the neural networks that are used for learning. There are 	only 2 choices, one with only 2 fully connected layers and RELU activations and one 	with 3 fully connected layers with SELU activations. Their names are "RELU" and 	"SELU," respectively. Default is "RELU."
+network (string): The name of the neural networks that are used for learning.
+    There are only 2 choices, one with only 2 fully connected layers and RELU activations and one 
+    with 3 fully connected layers with SELU activations. Their names are "RELU" and "SELU," respectively.
+    Default is "RELU."
 ```
 
 #### Training parameters
@@ -226,7 +235,7 @@ network (string): The name of the neural networks that are used for learning. Th
     beta_initial (float): For prioritized replay. Corrects bias induced by weighted
     	sampling of stored experiences. The beta parameters have no effect if the agent
     	unless  prioritized experience replay is used.
-    beta_rate (float): Rate (0 to 1) for increasing beta to 1 as per Schauel et al. 		https://arxiv.org/abs/1511.05952
+    beta_rate (float): Rate (0 to 1) for increasing beta to 1 as per Schauel et al. (https://arxiv.org/abs/1511.05952)
     tau_initial (float): Initial value for tau, the weighting factor for soft updating
     	the neural network. The tau parameters have no effect if the agent uses fixed Q
     	targets instead of soft updating.

@@ -1,5 +1,8 @@
 """
 Define and build neural networks for a DDPG model
+Adapted from the Udacity Deep Reinforcement Learning Nanodegree course materials.
+Specificaly, from the code for the solution to the OpenAI Gym's pendulum environment
+(https://github.com/udacity/deep-reinforcement-learning/tree/master/ddpg-pendulum).
 """
 
 import numpy as np
