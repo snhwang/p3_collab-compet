@@ -220,41 +220,26 @@ A few parameters are obtained from the environment:
 
 The scores plotted below were generated with the following parameters:
 
-`agent = Agent(
-
-​    state_size = state_size,
-
-​    action_size = action_size,
-
-​    num_agents = num_agents,
-
-​    random_seed = 0,
-
-​    batch_size = 1024, 
-
-​    lr_actor = 0.001,
-
-​    lr_critic = 0.001,
-
-​    noise_theta = 0.1,
-
-​    noise_sigma = 0.05,
-
-​    actor_fc1 = 128,
-
-​    actor_fc2 = 128,
-
-​    critic_fc1 = 128,
-
-​    critic_fc2 = 128,
-
-​    update_every = 20,
-
-​    num_updates = 15,
-
-​    buffer_size = int(2e6)
-
-)`
+```
+agent = Agent(
+    state_size = state_size,
+    action_size = action_size,
+    num_agents = num_agents,
+    random_seed = 0,
+    batch_size = 1024, 
+    lr_actor = 0.001,
+    lr_critic = 0.001,
+    noise_theta = 0.1,
+    noise_sigma = 0.05,
+    actor_fc1 = 128,
+    actor_fc2 = 128,
+    critic_fc1 = 128,
+    critic_fc2 = 128,
+    update_every = 20,
+    num_updates = 15,
+    buffer_size = int(2e6)
+)
+```
 
 `max_scores, avg_max_scores = ddpg(
 ​    agent,
