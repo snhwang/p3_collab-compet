@@ -1,5 +1,9 @@
 '''
-This code defines the learning Agent for performing learning with Deep Deterministic Policy Gradients. Agent can actually consist of multiple agents which are learning simultaneously. The code was adapted from code provided by Udacity's Deep Reinforcement Learning Nanodegree. Specifically, it was adapted from the code for solving OpenAI Gym's pendulum environment (https://github.com/udacity/deep-reinforcement-learning/tree/master/ddpg-pendulum).
+This code defines the learning Agent for performing learning with the Deep Deterministic Policy Gradient method.
+Agent can actually consist of multiple agents which are learning simultaneously.
+The code was adapted from code provided by Udacity's Deep Reinforcement Learning Nanodegree.
+Specifically, it was adapted from the code for solving OpenAI Gym's pendulum environment
+(https://github.com/udacity/deep-reinforcement-learning/tree/master/ddpg-pendulum).
 '''
 
 import numpy as np
