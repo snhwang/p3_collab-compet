@@ -11975,7 +11975,7 @@ The state for the first agent looks like: [ 0.          0.          0.          
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h3 id="3.-Define-the-Learning-Process-with-Deep-Deterministic--Policy-Gradients">3. Define the Learning Process with Deep Deterministic  Policy Gradients<a class="anchor-link" href="#3.-Define-the-Learning-Process-with-Deep-Deterministic--Policy-Gradients">&#182;</a></h3><p>The learning process using Deep Deterministic Policy Gradients is defined below (ddpg). The input parameters are described in the comments below. The outputs are list of the maximum scores for each episode and a list of the maimum scores averaged over the current and preceding 99 episodes (100-episode averages). The episodes before 100 just have averages over the preceding scores although there are less than 100.</p>
+<h3 id="3.-Define-the-Learning-Process-with-Deep-Deterministic--Policy-Gradient-Method">3. Define the Learning Process with Deep Deterministic  Policy Gradient Method<a class="anchor-link" href="#3.-Define-the-Learning-Process-with-Deep-Deterministic--Policy-Gradient-Method">&#182;</a></h3><p>The learning process using the Deep Deterministic Policy Gradient method is defined below (ddpg). The input parameters are described in the comments below. The outputs are list of the maximum scores for each episode and a list of the maimum scores averaged over the current and preceding 99 episodes (100-episode averages). The episodes before 100 just have averages over the preceding scores although there are less than 100.</p>
 
 </div>
 </div>
@@ -12176,7 +12176,7 @@ update_every: The number of time steps between each updating of the neural netwo
 num_updates: The number of times to update the networks at every update_every interval
 buffer_size: Buffer size for experience replay. Default 2e6.
 network (string): The name of the neural networks that are used for learning.
-    There are   only 2 choices, one with only 2 fully connected layers and RELU activations and one
+    There are only 2 choices, one with only 2 fully connected layers and RELU activations and one
     with 3 fully connected layers with SELU activations.
     Their names are "RELU" and "SELU," respectively. Default is "RELU."</code></pre>
 
@@ -14511,7 +14511,32 @@ Ep 2000	Ep AvgMax: 2.2088	Ag1: 2.6000	Ag2: 2.7000	Max: 2.7000	g: 0.9900	ns: 0.81
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[9]:</div>
+<div class="prompt input_prompt">In&nbsp;[5]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Define the agent again. This is not necessary if the entire notebook was run from the beginning.</span>
+<span class="c1"># However, I had to run this section again and did not want to repeat the learningin in Section 5.</span>
+
+<span class="n">agent</span> <span class="o">=</span> <span class="n">Agent</span><span class="p">(</span>
+    <span class="n">state_size</span> <span class="o">=</span> <span class="n">state_size</span><span class="p">,</span>
+    <span class="n">action_size</span> <span class="o">=</span> <span class="n">action_size</span><span class="p">,</span>
+    <span class="n">num_agents</span> <span class="o">=</span> <span class="n">num_agents</span><span class="p">,</span>
+    <span class="n">random_seed</span> <span class="o">=</span> <span class="mi">19</span><span class="p">,</span>
+    <span class="n">actor_fc1</span> <span class="o">=</span> <span class="mi">128</span><span class="p">,</span>
+    <span class="n">actor_fc2</span> <span class="o">=</span> <span class="mi">128</span><span class="p">,</span>
+    <span class="n">critic_fc1</span> <span class="o">=</span> <span class="mi">128</span><span class="p">,</span>
+    <span class="n">critic_fc2</span> <span class="o">=</span> <span class="mi">128</span><span class="p">,</span>
+<span class="p">)</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[6]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">load_and_run</span><span class="p">(</span><span class="n">agent</span><span class="p">,</span> <span class="n">env</span><span class="p">,</span> <span class="s1">&#39;checkpoint_actor_best_avg_max.pth&#39;</span><span class="p">,</span> <span class="s1">&#39;checkpoint_critic_best_avg_max.pth&#39;</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
@@ -14533,105 +14558,105 @@ Ep 2000	Ep AvgMax: 2.2088	Ag1: 2.6000	Ag2: 2.7000	Max: 2.7000	g: 0.9900	ns: 0.81
 <div class="output_subarea output_stream output_stdout output_text">
 <pre>Ep 1	Score: 2.60
 Ep 2	Score: 2.65
-Ep 3	Score: 2.60
-Ep 4	Score: 2.65
-Ep 5	Score: 0.25
-Ep 6	Score: 0.90
-Ep 7	Score: 0.20
+Ep 3	Score: 2.65
+Ep 4	Score: 2.60
+Ep 5	Score: 2.65
+Ep 6	Score: 0.20
+Ep 7	Score: 2.55
 Ep 8	Score: 2.60
-Ep 9	Score: 2.65
-Ep 10	Score: 2.65
-Ep 11	Score: 1.30
-Ep 12	Score: 0.30
-Ep 13	Score: 0.10
-Ep 14	Score: 0.05
-Ep 15	Score: 0.10
-Ep 16	Score: 2.60
-Ep 17	Score: 2.65
-Ep 18	Score: 0.50
-Ep 19	Score: 2.60
+Ep 9	Score: 2.60
+Ep 10	Score: 0.25
+Ep 11	Score: 2.60
+Ep 12	Score: 2.65
+Ep 13	Score: 2.65
+Ep 14	Score: 2.60
+Ep 15	Score: 2.65
+Ep 16	Score: 0.10
+Ep 17	Score: 2.60
+Ep 18	Score: 2.55
+Ep 19	Score: 2.65
 Ep 20	Score: 2.65
-Ep 21	Score: 2.65
-Ep 22	Score: 2.60
+Ep 21	Score: 2.60
+Ep 22	Score: 2.65
 Ep 23	Score: 2.65
-Ep 24	Score: 2.65
-Ep 25	Score: 1.05
-Ep 26	Score: 2.60
-Ep 27	Score: 2.60
-Ep 28	Score: 2.65
-Ep 29	Score: 0.20
-Ep 30	Score: 2.60
-Ep 31	Score: 2.65
-Ep 32	Score: 2.60
-Ep 33	Score: 0.10
-Ep 34	Score: 2.55
-Ep 35	Score: 1.40
-Ep 36	Score: 0.35
+Ep 24	Score: 2.60
+Ep 25	Score: 2.65
+Ep 26	Score: 2.65
+Ep 27	Score: 2.65
+Ep 28	Score: 2.60
+Ep 29	Score: 2.65
+Ep 30	Score: 2.65
+Ep 31	Score: 2.60
+Ep 32	Score: 2.65
+Ep 33	Score: 2.65
+Ep 34	Score: 1.25
+Ep 35	Score: 0.10
+Ep 36	Score: 0.15
 Ep 37	Score: 2.60
-Ep 38	Score: 2.65
-Ep 39	Score: 2.65
-Ep 40	Score: 2.60
-Ep 41	Score: 2.60
-Ep 42	Score: 2.65
-Ep 43	Score: 2.60
+Ep 38	Score: 0.30
+Ep 39	Score: 2.60
+Ep 40	Score: 2.65
+Ep 41	Score: 2.65
+Ep 42	Score: 2.60
+Ep 43	Score: 2.65
 Ep 44	Score: 2.65
-Ep 45	Score: 0.70
-Ep 46	Score: 2.60
+Ep 45	Score: 2.60
+Ep 46	Score: 2.65
 Ep 47	Score: 2.65
-Ep 48	Score: 0.15
-Ep 49	Score: 0.15
-Ep 50	Score: 2.60
+Ep 48	Score: 2.65
+Ep 49	Score: 2.60
+Ep 50	Score: 0.25
 Ep 51	Score: 2.60
-Ep 52	Score: 0.15
-Ep 53	Score: 2.60
-Ep 54	Score: 2.65
-Ep 55	Score: 0.20
-Ep 56	Score: 2.60
-Ep 57	Score: 0.60
-Ep 58	Score: 2.55
-Ep 59	Score: 2.65
+Ep 52	Score: 2.65
+Ep 53	Score: 2.65
+Ep 54	Score: 2.60
+Ep 55	Score: 2.65
+Ep 56	Score: 1.00
+Ep 57	Score: 0.35
+Ep 58	Score: 0.50
+Ep 59	Score: 2.60
 Ep 60	Score: 2.65
-Ep 61	Score: 2.60
-Ep 62	Score: 0.10
-Ep 63	Score: 2.60
+Ep 61	Score: 2.65
+Ep 62	Score: 2.60
+Ep 63	Score: 2.65
 Ep 64	Score: 2.65
-Ep 65	Score: 2.65
-Ep 66	Score: 2.60
+Ep 65	Score: 2.60
+Ep 66	Score: 2.65
 Ep 67	Score: 2.65
-Ep 68	Score: 2.65
+Ep 68	Score: 2.60
 Ep 69	Score: 2.65
-Ep 70	Score: 2.60
-Ep 71	Score: 2.65
+Ep 70	Score: 2.65
+Ep 71	Score: 2.60
 Ep 72	Score: 2.65
 Ep 73	Score: 2.60
 Ep 74	Score: 2.65
 Ep 75	Score: 2.60
-Ep 76	Score: 2.65
+Ep 76	Score: 2.60
 Ep 77	Score: 2.65
-Ep 78	Score: 2.60
-Ep 79	Score: 2.65
-Ep 80	Score: 2.35
+Ep 78	Score: 0.25
+Ep 79	Score: 2.60
+Ep 80	Score: 0.25
 Ep 81	Score: 2.60
-Ep 82	Score: 2.65
-Ep 83	Score: 2.65
-Ep 84	Score: 2.60
+Ep 82	Score: 0.40
+Ep 83	Score: 2.60
+Ep 84	Score: 2.65
 Ep 85	Score: 2.65
-Ep 86	Score: 2.65
-Ep 87	Score: 2.60
-Ep 88	Score: 2.65
-Ep 89	Score: 2.65
-Ep 90	Score: 2.65
-Ep 91	Score: 2.60
-Ep 92	Score: 0.50
+Ep 86	Score: 2.60
+Ep 87	Score: 2.65
+Ep 88	Score: 0.40
+Ep 89	Score: 2.60
+Ep 90	Score: 2.60
+Ep 91	Score: 2.65
+Ep 92	Score: 2.65
 Ep 93	Score: 2.60
 Ep 94	Score: 2.65
-Ep 95	Score: 2.60
-Ep 96	Score: 2.65
-Ep 97	Score: 2.60
-Ep 98	Score: 2.65
-Ep 99	Score: 2.65
-Ep 100	Score: 0.45
-Avg over 100 episodes: 2.12
+Ep 95	Score: 2.65
+Ep 96	Score: 2.60
+Ep 97	Score: 2.65
+Ep 98	Score: 0.25
+Ep 99	Score: 2.60
+Ep 100	Score: 0.25
+Avg over 100 episodes: 2.24
 </pre>
 </div>
 </div>
@@ -14642,7 +14667,7 @@ Avg over 100 episodes: 2.12
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[10]:</div>
+<div class="prompt input_prompt">In&nbsp;[7]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">load_and_run</span><span class="p">(</span><span class="n">agent</span><span class="p">,</span> <span class="n">env</span><span class="p">,</span> <span class="s1">&#39;checkpoint_actor_best_agent_max.pth&#39;</span><span class="p">,</span> <span class="s1">&#39;checkpoint_critic_best_agent_max.pth&#39;</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
@@ -14662,107 +14687,107 @@ Avg over 100 episodes: 2.12
 
 
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>Ep 1	Score: 1.35
-Ep 2	Score: 2.60
+<pre>Ep 1	Score: 2.60
+Ep 2	Score: 2.65
 Ep 3	Score: 2.65
-Ep 4	Score: 2.70
-Ep 5	Score: 2.60
-Ep 6	Score: 0.25
-Ep 7	Score: 2.60
+Ep 4	Score: 2.65
+Ep 5	Score: 2.65
+Ep 6	Score: 2.60
+Ep 7	Score: 2.65
 Ep 8	Score: 2.65
-Ep 9	Score: 0.10
-Ep 10	Score: 1.20
+Ep 9	Score: 2.65
+Ep 10	Score: -0.00
 Ep 11	Score: 2.60
-Ep 12	Score: 1.50
-Ep 13	Score: 2.60
-Ep 14	Score: 2.70
+Ep 12	Score: 2.65
+Ep 13	Score: 2.65
+Ep 14	Score: 2.65
 Ep 15	Score: 2.65
-Ep 16	Score: 1.85
-Ep 17	Score: 0.70
-Ep 18	Score: 1.55
-Ep 19	Score: 2.60
-Ep 20	Score: 2.65
-Ep 21	Score: 2.65
+Ep 16	Score: 2.60
+Ep 17	Score: 2.65
+Ep 18	Score: 2.65
+Ep 19	Score: 2.65
+Ep 20	Score: 0.05
+Ep 21	Score: 2.60
 Ep 22	Score: 2.65
-Ep 23	Score: 1.60
-Ep 24	Score: 0.60
-Ep 25	Score: 1.15
-Ep 26	Score: 0.85
-Ep 27	Score: 2.15
-Ep 28	Score: 1.30
-Ep 29	Score: 0.10
-Ep 30	Score: 2.65
-Ep 31	Score: 2.65
+Ep 23	Score: 2.65
+Ep 24	Score: 2.60
+Ep 25	Score: 2.65
+Ep 26	Score: 2.65
+Ep 27	Score: 2.65
+Ep 28	Score: 2.65
+Ep 29	Score: 2.65
+Ep 30	Score: 0.10
+Ep 31	Score: 2.60
 Ep 32	Score: 2.65
-Ep 33	Score: 2.60
-Ep 34	Score: 2.10
-Ep 35	Score: 2.60
+Ep 33	Score: -0.00
+Ep 34	Score: 2.60
+Ep 35	Score: 2.65
 Ep 36	Score: 2.65
-Ep 37	Score: 0.10
-Ep 38	Score: 2.60
-Ep 39	Score: 2.65
-Ep 40	Score: -0.00
-Ep 41	Score: 0.75
-Ep 42	Score: 2.60
-Ep 43	Score: 0.45
-Ep 44	Score: 0.65
-Ep 45	Score: 2.60
+Ep 37	Score: 2.65
+Ep 38	Score: -0.00
+Ep 39	Score: 2.60
+Ep 40	Score: 2.65
+Ep 41	Score: 2.65
+Ep 42	Score: 2.65
+Ep 43	Score: 0.04
+Ep 44	Score: 2.60
+Ep 45	Score: 2.65
 Ep 46	Score: 2.65
-Ep 47	Score: -0.00
-Ep 48	Score: 0.15
-Ep 49	Score: 0.85
-Ep 50	Score: 0.65
-Ep 51	Score: 2.60
-Ep 52	Score: 2.65
-Ep 53	Score: 2.65
-Ep 54	Score: 1.80
-Ep 55	Score: 0.80
-Ep 56	Score: 2.60
-Ep 57	Score: 0.80
-Ep 58	Score: 0.40
-Ep 59	Score: 0.15
-Ep 60	Score: 2.25
-Ep 61	Score: 2.15
-Ep 62	Score: -0.00
+Ep 47	Score: 2.65
+Ep 48	Score: 2.65
+Ep 49	Score: 2.60
+Ep 50	Score: 2.65
+Ep 51	Score: 2.65
+Ep 52	Score: -0.00
+Ep 53	Score: 2.60
+Ep 54	Score: 2.65
+Ep 55	Score: 2.65
+Ep 56	Score: 2.65
+Ep 57	Score: 2.65
+Ep 58	Score: -0.00
+Ep 59	Score: 2.60
+Ep 60	Score: 2.65
+Ep 61	Score: 0.05
+Ep 62	Score: 2.60
 Ep 63	Score: 2.65
-Ep 64	Score: 2.60
+Ep 64	Score: -0.00
 Ep 65	Score: 2.60
-Ep 66	Score: 0.65
-Ep 67	Score: 2.60
+Ep 66	Score: 2.65
+Ep 67	Score: 2.65
 Ep 68	Score: 2.65
-Ep 69	Score: 0.75
-Ep 70	Score: 0.80
-Ep 71	Score: 1.65
-Ep 72	Score: 2.60
-Ep 73	Score: 1.50
+Ep 69	Score: 2.60
+Ep 70	Score: 2.65
+Ep 71	Score: 2.65
+Ep 72	Score: 2.65
+Ep 73	Score: 2.65
 Ep 74	Score: 2.65
-Ep 75	Score: 0.80
-Ep 76	Score: 0.75
-Ep 77	Score: 0.45
-Ep 78	Score: 0.25
-Ep 79	Score: 2.60
+Ep 75	Score: 2.60
+Ep 76	Score: 2.65
+Ep 77	Score: 2.65
+Ep 78	Score: 2.65
+Ep 79	Score: 2.65
 Ep 80	Score: 2.65
-Ep 81	Score: 0.20
+Ep 81	Score: 2.65
 Ep 82	Score: 2.60
-Ep 83	Score: 1.55
-Ep 84	Score: 1.30
+Ep 83	Score: 2.65
+Ep 84	Score: 2.65
 Ep 85	Score: 2.65
-Ep 86	Score: 2.60
-Ep 87	Score: 0.95
-Ep 88	Score: 2.60
-Ep 89	Score: 2.70
-Ep 90	Score: 1.45
+Ep 86	Score: 2.65
+Ep 87	Score: 2.65
+Ep 88	Score: 0.05
+Ep 89	Score: 2.60
+Ep 90	Score: 2.65
 Ep 91	Score: 2.65
-Ep 92	Score: 1.00
-Ep 93	Score: 1.75
-Ep 94	Score: 2.60
+Ep 92	Score: 2.65
+Ep 93	Score: 2.65
+Ep 94	Score: 2.65
 Ep 95	Score: 2.65
-Ep 96	Score: 0.25
-Ep 97	Score: 2.55
-Ep 98	Score: 2.60
+Ep 96	Score: 2.60
+Ep 97	Score: 2.65
+Ep 98	Score: 2.65
 Ep 99	Score: 2.65
 Ep 100	Score: 2.65
-Avg over 100 episodes: 1.78
+Avg over 100 episodes: 2.35
 </pre>
 </div>
 </div>
