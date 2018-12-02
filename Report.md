@@ -8,47 +8,47 @@
 
 ## Implementation
 
-​	The implementation was adapted from the course materials. Specifically, it was based on the code for the pendulum environment from the Open AI Gym provided at the course repository (https://github.com/udacity/deep-reinforcement-learning/tree/master/ddpg-pendulum). Similar code was used to solve the previous project for the course (https://github.com/snhwang/p2-continuous-control-SNH.git).
+    The implementation was adapted from the course materials. Specifically, it was based on the code for the pendulum environment from the Open AI Gym provided at the course repository (https://github.com/udacity/deep-reinforcement-learning/tree/master/ddpg-pendulum). Similar code was used to solve the previous project for the course (https://github.com/snhwang/p2-continuous-control-SNH.git).
 
-​	The environment was created using Unity's ML Agents toolkit, but the learning algorithms were implemented with python 3.6 (specifically 3.6.6). The code was run using Jupyter notebook.
+    The environment was created using Unity's ML Agents toolkit, but the learning algorithms were implemented with python 3.6 (specifically 3.6.6). The code was run using Jupyter notebook.
 
-​	I utilized the deep deterministic policy gradient (DDPG) algorithm, which is a variant of the actor-critic learning method. An actor neural network predicts an action and the critic network models the goodness of the choice (i.e., Q value). This algorithm is discussed in more detail in Lillicrap et al. (Continuous Control with Deep Reinforcement Learning, https://arxiv.org/pdf/1509.02971.pdf). 
+    I utilized the deep deterministic policy gradient (DDPG) algorithm, which is a variant of the actor-critic learning method. An actor neural network predicts an action and the critic network models the goodness of the choice (i.e., Q value). This algorithm is discussed in more detail in Lillicrap et al. (Continuous Control with Deep Reinforcement Learning, https://arxiv.org/pdf/1509.02971.pdf). 
 
-​	A few of the features of the algorithm are discussed in further detail below.	
+    A few of the features of the algorithm are discussed in further detail below.	
 
 #### Soft Updating
 
-During training, the neural network weights are updated. This can become unstable or oscillatory, which was particularly problematic for this project. To reduce this, a method of "soft updating" is utilized. Rather than completely replacing the old weights with the new weights, the soft update method gradually blends in the local network to the target network. Basically it is a weighted average, strongly weighted to the original network so that changes occur gradually. The weight for the target network is `tau`, and the weight for the local network is thus `1-tau`:
+    During training, the neural network weights are updated. This can become unstable or oscillatory, which was particularly problematic for this project. To reduce this, a method of "soft updating" is utilized. Rather than completely replacing the old weights with the new weights, the soft update method gradually blends in the local network to the target network. Basically it is a weighted average, strongly weighted to the original network so that changes occur gradually. The weight for the target network is `tau`, and the weight for the local network is thus `1-tau`:
 
 `target_parameters(k+1) = tau * local_parameters(k) + (1-tau) * target_parameters(k)`,
 
 where k is the timestep.
 
-Smaller `tau` thus indicates the the weighting is shifted more towards the current target model. Since the weights are initialized randomly at the start of training, the weights early in training are likely not as useful. Also, as the neural networks learn, it may be benficial to decrease `tau` so that the changes to the neural network weights becomes more gentle. I modified the code to allow for starting with a high value of `tau` which decays towards a smaller value.
+    Smaller `tau` thus indicates the the weighting is shifted more towards the current target model. Since the weights are initialized randomly at the start of training, the weights early in training are likely not as useful. Also, as the neural networks learn, it may be benficial to decrease `tau` so that the changes to the neural network weights becomes more gentle. I modified the code to allow for starting with a high value of `tau` which decays towards a smaller value.
 
 #### Action Noise
 
-​	One of the problems of learning in continuous action spaces is enabling the learning agent to adequately explore the space in order to generate an adequate model. One method to achieve this is to add noise to the action. As was done by Lillicrap et al., an Ornstein-Uhlenbeck noise process was utilized. In the pendulum code, one of the terms for the noise process is a sampled for a uniform distribution. I changed this to a normal variate, which I think is the correct method. 
+    One of the problems of learning in continuous action spaces is enabling the learning agent to adequately explore the space in order to generate an adequate model. One method to achieve this is to add noise to the action. As was done by Lillicrap et al., an Ornstein-Uhlenbeck noise process was utilized. In the pendulum code, one of the terms for the noise process is a sampled for a uniform distribution. I changed this to a normal variate, which I think is the correct method. 
 
-​	The two noise parameters that I varied were theta and sigma. In an Ornstein–Uhlenbeck process, theta is the rate at which a perturbation to the system reverts towards the mean, which is assumed to be zero for our purposes. The parameter sigma, which is the standard deviation of the normal variate component, is a measure of the volatility of the perturbations. 
+    The two noise parameters that I varied were theta and sigma. In an Ornstein–Uhlenbeck process, theta is the rate at which a perturbation to the system reverts towards the mean, which is assumed to be zero for our purposes. The parameter sigma, which is the standard deviation of the normal variate component, is a measure of the volatility of the perturbations. 
 
-​	The default values provided in the code for the pendulum environment were theta = 0.15 and sigma = 0.2 I tried a wide range of values above and below these values. Unlike the previous project in which I which the learning agent appeared to get "stuck" continuously repeating the same action with no improvement, the learning in the Tennis environment appeared to be more unstable. The agents would achieve very high scores >2 and would seem somewhat stable for multiple episodes but would then suddenly fail and only achieve very low scores close to zero. Some times there would not be a single crash, but scores would rise then fall repeatedly but would have an underlying trend of improvement.
+    The default values provided in the code for the pendulum environment were theta = 0.15 and sigma = 0.2 I tried a wide range of values above and below these values. Unlike the previous project in which I which the learning agent appeared to get "stuck" continuously repeating the same action with no improvement, the learning in the Tennis environment appeared to be more unstable. The agents would achieve very high scores >2 and would seem somewhat stable for multiple episodes but would then suddenly fail and only achieve very low scores close to zero. Some times there would not be a single crash, but scores would rise then fall repeatedly but would have an underlying trend of improvement.
 
-​	For the previous project,  I used relatively large values for the noise parameters to "shock" the agents out of their repetitive actions. For the current project, I used small values to make the perturbations to the system more gentle to hopefully reduce the instability. I set the noise parameters to theta = 0.1 and sigma = 0.05.
+    For the previous project,  I used relatively large values for the noise parameters to "shock" the agents out of their repetitive actions. For the current project, I used small values to make the perturbations to the system more gentle to hopefully reduce the instability. I set the noise parameters to theta = 0.1 and sigma = 0.05.
 
 #### Gradient Clipping
 
-​	Gradient clipping is also utilized in the critic network to improve stability of the learning process. The magnitude of the gradients are limited to 1.
+    Gradient clipping is also utilized in the critic network to improve stability of the learning process. The magnitude of the gradients are limited to 1.
 
 #### Experience Replay
 
-​	The algorithm uses experience replay, which stores prior states and actions. Training is performed on a random sampling of the the stored items. For our previous project, I achieved success updating the neural network weights only 5 times after every 20 timesteps. This allows the algorithm to sample relatively uncorrelated data in the buffer since the samples are accumulated over more timesteps. I was unable to get this to work for the current project. I had to increase the number of updates to 15 after every 20 timesteps.
+    The algorithm uses experience replay, which stores prior states and actions. Training is performed on a random sampling of the the stored items. For our previous project, I achieved success updating the neural network weights only 5 times after every 20 timesteps. This allows the algorithm to sample relatively uncorrelated data in the buffer since the samples are accumulated over more timesteps. I was unable to get this to work for the current project. I had to increase the number of updates to 15 after every 20 timesteps.
 
-​	The very first update during training is delayed until there is adequate data stored in the experience replay buffer for training in the neural networks. Although only enough data for one mini batch is necessary to perform training, I increased this to having stored at least 10 times the batch size to accumulate more data before training. 
+    The very first update during training is delayed until there is adequate data stored in the experience replay buffer for training in the neural networks. Although only enough data for one mini batch is necessary to perform training, I increased this to having stored at least 10 times the batch size to accumulate more data before training. 
 
 #### Evolving Learning Parameters
 
-​	Gamma is the discount factor for Q learning for indicating a preference for current rewards over potential future rewards. In the setting of deep Q learning, Francois-Lavet et al. (How to Discount Deep Reinforcement Learning: Towards New Dynamic Strategies, https://arxiv.org/abs/1512.02011) recommend gradually increasing gamma as learning progresses. I used a variation of this technique and allowed gamma to increase according to:
+    Gamma is the discount factor for Q learning for indicating a preference for current rewards over potential future rewards. In the setting of deep Q learning, Francois-Lavet et al. (How to Discount Deep Reinforcement Learning: Towards New Dynamic Strategies, https://arxiv.org/abs/1512.02011) recommend gradually increasing gamma as learning progresses. I used a variation of this technique and allowed gamma to increase according to:
 
 `gamma(k + 1) = gamma_final + (1 - gamma_rate) * (gamma_final - gamma(k))`
 
@@ -62,13 +62,13 @@ gamma_rate = 0.01
 
 I did not have time to do enough runs to determine if this was helpful or not.
 
-As I mentioned above, `tau`, the weighting factor for soft updating, also could evolve according to:
+    As I mentioned above, `tau`, the weighting factor for soft updating, also could evolve according to:
 
 `tau(k + 1) = tau_final + (1 - tau_rate) * (tau_final - tau(k))`
 
 For the current project, I made tau decay from 0.01 to 0.001 with a rate of 0.001.
 
-For decaying the magnitude of noise, I just use a multiplicative factor, where factor < 1:
+    For decaying the magnitude of noise, I just use a multiplicative factor, where factor < 1:
 
 `scaling_factor(k+1) = scaling_factor(k) * noise_factor`
 
@@ -76,7 +76,7 @@ The noise is then multiplied by `scaling_factor`.
 
 #### The Neural Networks
 
-For the previous project, I was initially successful with neural networks using SELU activations and 3 fully connected layers to achieve the required scores. I thus initially tried to use the same type of neural network but was unsuccessful I switched back to RELU activations and added batch normalization before the state input as well as between all of the layers in the actor network as suggested by Lillicrap et al. I also followed the recommendation to apply batch normalization at every layer before the action input for the critic network. I could not achieve decent scores until I went back to 2 fully connected layers. I also was more successful, in terms of speed of learning and scores, when I removed some of the batch normalization. The current version has batch normalization only for the state inputs of both the actor and critic networks. Please keep in mind that I only performed manual  testing and only tried a few different variations. More formalized and thorough testing would be required to generate an optimal model. Similarly, although I was not as successful with the SELU activations, my testing was too limited to definitively conclude that SELU is not as good for this application. One reasons is that the inputs to SELU are supposed to have a specific weight initialization with zero mean and standard deviation of the squared root of 1/(size of input). However, I have not implemented this yet.
+    For the previous project, I was initially successful with neural networks using SELU activations and 3 fully connected layers to achieve the required scores. I thus initially tried to use the same type of neural network but was unsuccessful I switched back to RELU activations and added batch normalization before the state input as well as between all of the layers in the actor network as suggested by Lillicrap et al. I also followed the recommendation to apply batch normalization at every layer before the action input for the critic network. I could not achieve decent scores until I went back to 2 fully connected layers. I also was more successful, in terms of speed of learning and scores, when I removed some of the batch normalization. The current version has batch normalization only for the state inputs of both the actor and critic networks. Please keep in mind that I only performed manual  testing and only tried a few different variations. More formalized and thorough testing would be required to generate an optimal model. Similarly, although I was not as successful with the SELU activations, my testing was too limited to definitively conclude that SELU is not as good for this application. One reasons is that the inputs to SELU are supposed to have a specific weight initialization with zero mean and standard deviation of the squared root of 1/(size of input). However, I have not implemented this yet.
 
 The following is my final actor neural network structure for this project:
 
@@ -139,7 +139,7 @@ The following parameters determine the learning agent:
 
 #### Training parameters
 
-This learning process is implemented in section 3 of the Jupyter notebook, Tennis-SNH.ipynb , as `ddpg`. Running `ddpg` returns a list of  scores and 100-episode-average maximum scores. These parameters which adjust the learning for `ddpg` are the following:
+    This learning process is implemented in section 3 of the Jupyter notebook, Tennis-SNH.ipynb , as `ddpg`. Running `ddpg` returns a list of  scores and 100-episode-average maximum scores. These parameters which adjust the learning for `ddpg` are the following:
 
 ```
 agent (Agent): The learning agent
@@ -241,18 +241,20 @@ agent = Agent(
 )
 ```
 
-`max_scores, avg_max_scores = ddpg(
-​    agent,
-​    n_episodes = 2000,
-​    max_t = 10000,
-​    gamma_initial = 0.95,
-​    gamma_final = 0.99,
-​    gamma_rate = 0.01,
-​    tau_initial = 0.01,
-​    tau_final = 0.001,
-​    tau_rate = 0.001,
-​    noise_factor = 0.9999
-)`
+```
+max_scores, avg_max_scores = ddpg(
+    agent,
+    n_episodes = 2000,
+    max_t = 10000,
+    gamma_initial = 0.95,
+    gamma_final = 0.99,
+    gamma_rate = 0.01,
+    tau_initial = 0.01,
+    tau_final = 0.001,
+    tau_rate = 0.001,
+    noise_factor = 0.9999
+)
+```
 
 
 
