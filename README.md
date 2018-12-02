@@ -232,7 +232,7 @@ network (string): The name of the neural networks that are used for learning. Th
     beta_initial (float): For prioritized replay. Corrects bias induced by weighted
     	sampling of stored experiences. The beta parameters have no effect if the agent
     	unless  prioritized experience replay is used.
-    beta_rate (float): Rate (0 to 1) for increasing beta to 1 as per Schauel et al. 		https://arxiv.org/abs/1511.05952
+    beta_rate (float): Rate (0 to 1) for increasing beta to 1 as per Schauel et al. (https://arxiv.org/abs/1511.05952)
     tau_initial (float): Initial value for tau, the weighting factor for soft updating
     	the neural network. The tau parameters have no effect if the agent uses fixed Q
     	targets instead of soft updating.
