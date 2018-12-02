@@ -212,7 +212,10 @@ critic_fc3: Units in third layer. This parameter does nothing for the "RELU" net
 update_every: The number of time steps between each updating of the neural networks 
 num_updates: The number of times to update the networks at every update_every interval
 buffer_size: Buffer size for experience replay. Default 2e6.
-network (string): The name of the neural networks that are used for learning. There are 	only 2 choices, one with only 2 fully connected layers and RELU activations and one 	with 3 fully connected layers with SELU activations. Their names are "RELU" and 	"SELU," respectively. Default is "RELU."
+network (string): The name of the neural networks that are used for learning.
+    There are only 2 choices, one with only 2 fully connected layers and RELU activations and one 
+    with 3 fully connected layers with SELU activations. Their names are "RELU" and "SELU," respectively.
+    Default is "RELU."
 ```
 
 #### Training parameters
